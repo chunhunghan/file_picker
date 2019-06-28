@@ -35,14 +35,12 @@ func (p *FilePickerPlugin) filePicker(dialog dialog, isDirectory bool) func(argu
 			if !ok {
 				return nil, errors.New("arguments requires a title parameter with type string")
 			}
-
-			fileDescriptor, _, err := dialog.File(title, "*", isDirectory)
-			if err != nil {
-				return nil, errors.Wrap(err, "failed to open dialog picker")
-			}
-		*/
-
+        */
 		fileDescriptor, _, err := dialog.File(title, "*", isDirectory)
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to open dialog picker")
+		}
+				
 		//fileDescriptor, _, err := dlgs.File("select file", "*", false)
 		return fileDescriptor, nil
 	}
