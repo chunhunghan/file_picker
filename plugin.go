@@ -16,7 +16,10 @@ func (p *FilePickerPlugin) InitPlugin(messenger plugin.BinaryMessenger) error {
 
 	channel := plugin.NewMethodChannel(messenger, channelName, plugin.StandardMethodCodec{})
 	//channel.HandleFunc("openDirectory", p.filePicker(dialogProvider, true))
-	channel.HandleFunc("openFile", p.filePicker(dialogProvider, false))
+	channel.HandleFunc("ANY", p.filePicker(dialogProvider, false))
+	channel.HandleFunc("IMAGE", p.filePicker(dialogProvider, false))
+	channel.HandleFunc("AUDIO", p.filePicker(dialogProvider, false))
+	channel.HandleFunc("VIDEO", p.filePicker(dialogProvider, false))
 
 	return nil
 }
