@@ -37,7 +37,7 @@ func (p *FilePickerPlugin) filePicker(dialog dialog, isDirectory bool) func(argu
 				return nil, errors.New("arguments requires a title parameter with type string")
 			}
 		*/
-		fileDescriptor, _, err := dialog.File(title, "*", isDirectory)
+		fileDescriptor, _, err := dialog.File("select file", "*", isDirectory)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to open dialog picker")
 		}
