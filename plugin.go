@@ -12,6 +12,10 @@ type FilePickerPlugin struct{}
 
 var _ flutter.Plugin = &FilePickerPlugin{} // compile-time type check
 
+func SayHello() {
+	//fmt.Println("Hello, Ajinkya")
+}
+
 func (p *FilePickerPlugin) InitPlugin(messenger plugin.BinaryMessenger) error {
 	dialogProvider := dialogProvider{}
 
