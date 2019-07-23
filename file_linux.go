@@ -23,7 +23,7 @@ func fileFilter(method string) (string, error) {
 		if strings.HasPrefix(method, "__CUSTOM_") {
 			resolveType := strings.Split(method, "__CUSTOM_")
 			filter = `*.` + resolveType[1]
-			fmt.Println("handleFilePicker fileExtension:" + filter)
+			fmt.Println("final filter string:" + filter)
 		} else {
 			return "", errors.New("unknown method")
 		}

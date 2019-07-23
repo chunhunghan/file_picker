@@ -2,7 +2,7 @@ package file_picker
 
 import (
 	"fmt"
-	
+
 	"github.com/go-flutter-desktop/go-flutter"
 	"github.com/go-flutter-desktop/go-flutter/plugin"
 	"github.com/pkg/errors"
@@ -15,22 +15,12 @@ type FilePickerPlugin struct{}
 var _ flutter.Plugin = &FilePickerPlugin{} // compile-time type check
 
 func (p *FilePickerPlugin) InitPlugin(messenger plugin.BinaryMessenger) error {
-	fmt.Println("InitPlugin")
-	//dialogProvider := dialogProvider{}
-
 	channel := plugin.NewMethodChannel(messenger, channelName, plugin.StandardMethodCodec{})
-	//channel.HandleFunc("openDirectory", p.filePicker(dialogProvider, true))
-	/*
-		channel.HandleFunc("ANY", p.filePicker(dialogProvider, false, "*"))
-		channel.HandleFunc("IMAGE", p.filePicker(dialogProvider, false, "*"))
-		channel.HandleFunc("AUDIO", p.filePicker(dialogProvider, false, "*"))
-		channel.HandleFunc("VIDEO", p.filePicker(dialogProvider, false, "*"))
-	*/
 	channel.CatchAllHandleFunc(p.handleFilePicker)
 	return nil
 }
 
-func (p *FilePickerPlugin) handleFilePicker(methodCall interface{}) (reply interface{}, err error) {	
+func (p *FilePickerPlugin) handleFilePicker(methodCall interface{}) (reply interface{}, err error) {
 	method := methodCall.(plugin.MethodCall)
 	multipleSelection := method.Arguments.(bool)
 
@@ -45,13 +35,10 @@ func (p *FilePickerPlugin) handleFilePicker(methodCall interface{}) (reply inter
 		return nil, errors.Wrap(err, "failed to open dialog picker")
 	}
 
-	// return the randomized Method Name
 	return fileDescriptor, nil
 }
 
 func (p *FilePickerPlugin) filePicker(dialog dialog, isDirectory bool, filter string, multipleSelection bool) (reply interface{}, err error) {
-	fmt.Println("file Picker")
-
 	switch multipleSelection {
 	case false:
 		fmt.Println("filePicker fileExtension:" + filter)
