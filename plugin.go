@@ -32,7 +32,7 @@ func (p *FilePickerPlugin) handleFilePicker(methodCall interface{}) (reply inter
 	dialogProvider := dialogProvider{}
 	fileDescriptor, err := p.filePicker(dialogProvider, false, filter, multipleSelection)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to open dialog picker")
+		return "", errors.Wrap(err, "failed to open dialog picker")
 	}
 
 	return fileDescriptor, nil
