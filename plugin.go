@@ -1,8 +1,6 @@
 package file_picker
 
 import (
-	"fmt"
-
 	"github.com/go-flutter-desktop/go-flutter"
 	"github.com/go-flutter-desktop/go-flutter/plugin"
 	"github.com/pkg/errors"
@@ -41,7 +39,6 @@ func (p *FilePickerPlugin) handleFilePicker(methodCall interface{}) (reply inter
 func (p *FilePickerPlugin) filePicker(dialog dialog, isDirectory bool, filter string, multipleSelection bool) (reply interface{}, err error) {
 	switch multipleSelection {
 	case false:
-		fmt.Println("filePicker fileExtension:" + filter)
 		fileDescriptor, _, err := dialog.File("select file", filter, isDirectory)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to open dialog picker")
