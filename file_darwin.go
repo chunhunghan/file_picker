@@ -1,7 +1,6 @@
 package file_picker
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -12,7 +11,7 @@ func fileFilter(method string) (string, error) {
 
 	switch method {
 	case "ANY":
-		filter = `"*"`
+		filter = ``
 	case "IMAGE":
 		filter = `"PNG", "public.png", "JPEG", "jpg", "public.jpeg"`
 	case "AUDIO":
@@ -22,7 +21,7 @@ func fileFilter(method string) (string, error) {
 	default:
 		if strings.HasPrefix(method, "__CUSTOM_") {
 			resolveType := strings.Split(method, "__CUSTOM_")
-			filter = `"` + resolveType[1] + `"`			
+			filter = `"` + resolveType[1] + `"`
 		} else {
 			return "", errors.New("unknown method")
 		}
