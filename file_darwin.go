@@ -11,13 +11,13 @@ func fileFilter(method string) (string, error) {
 
 	switch method {
 	case "ANY":
-		filter = ``
+		filter = `public.item`
 	case "IMAGE":
-		filter = `"PNG", "public.png", "JPEG", "jpg", "public.jpeg"`
+		filter = `public.image`
 	case "AUDIO":
-		filter = `"MP3", "public.mp3"`
+		filter = `public.audio`
 	case "VIDEO":
-		filter = `"MOV"`
+		filter = `public.movie`
 	default:
 		if strings.HasPrefix(method, "__CUSTOM_") {
 			resolveType := strings.Split(method, "__CUSTOM_")
