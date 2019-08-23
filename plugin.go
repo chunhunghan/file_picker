@@ -1,6 +1,7 @@
 package file_picker
 
 import (
+	"github.com/gen2brain/dlgs"
 	"github.com/go-flutter-desktop/go-flutter"
 	"github.com/go-flutter-desktop/go-flutter/plugin"
 	"github.com/pkg/errors"
@@ -20,51 +21,35 @@ func (p *FilePickerPlugin) InitPlugin(messenger plugin.BinaryMessenger) error {
 
 func (p *FilePickerPlugin) handleFilePicker(methodCall interface{}) (reply interface{}, err error) {
 	method := methodCall.(plugin.MethodCall)
-	multipleSelection := method.Arguments.(bool)
 
 	filter, err := fileFilter(method.Method)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get filter")
 	}
 
-	dialogProvider := dialogProvider{}
-	fileDescriptor, err := p.filePicker(dialogProvider, false, filter, multipleSelection)
+	selectMultiple, ok := method.Arguments.(bool)
+	if !ok {
+		return nil, errors.Wrap(err, "invalid format for argument, not a bool")
+	}
+
+	if selectMultiple {
+		filePaths, _, err := dlgs.FileMulti("Select one or more files", filter)
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to open dialog picker")
+		}
+
+		// type []string is not supported by StandardMessageCodec
+		sliceFilePaths := make([]interface{}, len(filePaths))
+		for i, file := range filePaths {
+			sliceFilePaths[i] = file
+		}
+
+		return sliceFilePaths, nil
+	}
+
+	filePath, _, err := dlgs.File("Select a file", filter, false)
 	if err != nil {
-		return "", errors.Wrap(err, "user cancel select file")
+		return nil, errors.Wrap(err, "failed to open dialog picker")
 	}
-
-	return fileDescriptor, nil
-}
-
-func (p *FilePickerPlugin) filePicker(dialog dialog, isDirectory bool, filter string, multipleSelection bool) (reply interface{}, err error) {
-	switch multipleSelection {
-	case false:
-		fileDescriptor, _, err := dialog.File("select file", filter, isDirectory)
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to open dialog picker")
-		}
-		return fileDescriptor, nil
-
-	case true:
-		fileDescriptors, _, err := dialog.FileMulti("select files", filter)
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to open dialog picker")
-		}
-
-		//type []string is not supported by StandardMessageCodec
-		sliceFileDescriptors := make([]interface{}, len(fileDescriptors))
-		for i, file := range fileDescriptors {
-			sliceFileDescriptors[i] = file
-		}
-
-		return sliceFileDescriptors, nil
-
-	default:
-		fileDescriptor, _, err := dialog.File("select file", filter, isDirectory)
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to open dialog picker")
-		}
-		return fileDescriptor, nil
-	}
-
+	return filePath, nil
 }

@@ -7,26 +7,21 @@ import (
 )
 
 func fileFilter(method string) (string, error) {
-	var filter string
-
 	switch method {
 	case "ANY":
-		filter = `public.item`
+		return `public.item`, nil
 	case "IMAGE":
-		filter = `public.image`
+		return `public.image`, nil
 	case "AUDIO":
-		filter = `public.audio`
+		return `public.audio`, nil
 	case "VIDEO":
-		filter = `public.movie`
+		return `public.movie`, nil
 	default:
 		if strings.HasPrefix(method, "__CUSTOM_") {
 			resolveType := strings.Split(method, "__CUSTOM_")
-			filter = resolveType[1]
-		} else {
-			return "", errors.New("unknown method")
+			return resolveType[1], nil
 		}
+		return "", errors.New("unknown method")
 	}
-
-	return filter, nil
 
 }
