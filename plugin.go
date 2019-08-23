@@ -47,7 +47,7 @@ func (p *FilePickerPlugin) handleFilePicker(methodCall interface{}) (reply inter
 		return sliceFilePaths, nil
 	}
 
-	filePath, _, err := dlgs.File("Select a file", filter, false)
+	filePath, err := fileDialog("Select a file", filter)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to open dialog picker")
 	}

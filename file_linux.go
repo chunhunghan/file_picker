@@ -3,6 +3,7 @@ package file_picker
 import (
 	"strings"
 
+	"github.com/gen2brain/dlgs"
 	"github.com/pkg/errors"
 )
 
@@ -24,4 +25,12 @@ func fileFilter(method string) (string, error) {
 		return "", errors.New("unknown method")
 	}
 
+}
+
+func fileDialog(title string, filter string) (string, error) {
+	filePath, _, err := dlgs.File(title, filter, false)
+	if err != nil {
+		return "", errors.Wrap(err, "failed to open dialog picker")
+	}
+	return filePath, nil
 }
